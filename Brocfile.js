@@ -28,7 +28,6 @@ var mocha     = mv(find('node_modules/mocha/mocha.{js,css}'), 'node_modules/moch
 
 var testVendor = merge([ json3, mocha ]);
 
-
 var es5 = new Babel(lib, {
   blacklist: ['es6.modules']
 });
@@ -36,13 +35,13 @@ var es5 = new Babel(lib, {
 function rollupConfig(entry) {
   return new Rollup(es5, {
     rollup: {
-      entry: 'lib/' + entry,
-      targets: [
+      input: 'lib/' + entry,
+      output: [
         {
           format: 'umd',
-          moduleName: 'ES6Promise',
-          dest: entry,
-          sourceMap: 'inline'
+          name: 'ES6Promise',
+          file: entry,
+          sourcemap: 'inline'
         }
       ]
     }
@@ -68,13 +67,13 @@ function concatAs(outputFile) {
   return merge([
     concat(merge([es6Promise, header]), {
       headerFiles: ['config/versionTemplate.txt'],
-      inputFiles:  ['es6-promise.js'],
+      inputFiles: ['es6-promise.js'],
       outputFile: outputFile
     }),
 
     concat(merge([es6PromiseAuto, header]), {
       headerFiles: ['config/versionTemplate.txt'],
-      inputFiles:  ['es6-promise.auto.js'],
+      inputFiles: ['es6-promise.auto.js'],
       outputFile: outputFile.replace('es6-promise', 'es6-promise.auto'),
     }),
 
